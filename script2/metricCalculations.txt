@@ -1,0 +1,14 @@
+Average Block size:  sum(each block_size)/total_blocks
+
+blockTime(n) = timeStamp(n) - timeStamp(n-1)
+Average Block Time:  sun(block_time for each block)/total_blocks
+
+txSent = tps * (time_of_test_run after delay)
+txSuccessRate = (totalTrasnactionsInBlock/txSent)
+
+txThroughPut = totalTransactionsInBlock/blockTime
+avgTxThroughPut = sum(txThroughPut for each block)/total_blocks 
+
+cpuAvg = sum(cpuUsage at each timestamp after delay)/total_dataPoints
+ramAvg = sum(ramUsage at each timestamp after delay)/total_dataPoints
+    
