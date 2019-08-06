@@ -111,6 +111,6 @@ def aggerateData (p, tps):
 
 # initialPath = "/Users/master/Documents/Professional/whiteblock/whiteblock-parser/script/test/"
 # check = "/Users/master/Documents/Professional/whiteblock/Test/series_2a.1_2019-07-30T22:53:10/nodes/fb921383-af49-4e86-9a57-82b51ec1f381/blocks.json"
-testPath = "/Users/priom/Desktop/ChainSafe/whiteblock-aion/script2/blocks.json"
+# testPath = "/Users/priom/Desktop/ChainSafe/whiteblock-aion/script2/blocks.json"
 
-aggerateData(testPath, 200)
+# aggerateData(testPath, 200)
