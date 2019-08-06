@@ -1,6 +1,6 @@
-folderPath="/home/master/series"
+# folderPath="/Users/priom/Desktop/ChainSafe/whiteblock-aion/script2"
 
 for i in $@; do
-	python3 ./main.py $folderPath$i
+	python3 ./main.py 
 done
 
