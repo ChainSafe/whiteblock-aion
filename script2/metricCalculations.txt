@@ -1,14 +1,28 @@
+Actual starting point before the delay:
+    - First block with transactions. call it :  start
+
+Starting Point of the actual test run (2min Delay):
+    - block with a timeStamp that is closest to the 120 mark
+        from start.timeStamp. call it : testStartBlock
+
+All the calculations below are based on blocks after the starting block 
+of the test-run after delay has been located
+
 Average Block size:  sum(each block_size)/total_blocks
 
 blockTime(n) = timeStamp(n) - timeStamp(n-1)
-Average Block Time:  sun(block_time for each block)/total_blocks
+Average Block Time:  sum(block_time for each block)/total_blocks
 
-txSent = tps * (time_of_test_run after delay)
-txSuccessRate = (totalTrasnactionsInBlock/txSent)
+IntervalStart = testStartBlock.timeStamp
+IntervalEnd   = lastBlock.timeStamp
 
-txThroughPut = totalTransactionsInBlock/blockTime
+txSent = tps * (IntervalEnd - IntervalStart)
+totalTransactions = total trasnactions in all the block starting from testStartBlock
+txSuccessRate = (totalTrasnactions/txSent)
+
+
+txThroughPut = totalTransactionsInBlock/blockTimeOfBlock
 avgTxThroughPut = sum(txThroughPut for each block)/total_blocks 
 
 cpuAvg = sum(cpuUsage at each timestamp after delay)/total_dataPoints
 ramAvg = sum(ramUsage at each timestamp after delay)/total_dataPoints
-    
