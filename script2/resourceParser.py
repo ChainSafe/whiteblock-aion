@@ -43,8 +43,9 @@ def aggerateData (p, timeStamp):
             fullLength["ramUsage"] = [[] for _ in range(totalNode)]
            
         for nodeIndex in range(totalNode):
-            fullLength["cpuUsage"][nodeIndex].append(nodes[nodeIndex]["resourceUse"]["cpu"])
-            fullLength["ramUsage"][nodeIndex].append(nodes[nodeIndex]["resourceUse"]["residentSetSize"])
+            if nodes[nodeIndex]['timestamp'] >= int(timeStamp):
+                fullLength["cpuUsage"][nodeIndex].append(nodes[nodeIndex]["resourceUse"]["cpu"])
+                fullLength["ramUsage"][nodeIndex].append(nodes[nodeIndex]["resourceUse"]["residentSetSize"])
             # print(nodeIndex)
 
 
@@ -60,4 +61,3 @@ def aggerateData (p, timeStamp):
     
 
     return fullLength
-# cpu = "/Users/master/Documents/Professional/whiteblock/script/series_1b.1_2019-07-19T19:03:16/cpu.log"

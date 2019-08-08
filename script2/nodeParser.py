@@ -40,7 +40,7 @@ def aggerateData (p, tps):
 
     a2min = 0
     txCheck = False
-    print("Total Block Length", len(nodeInfo), "\n")
+    # print("Total Block Length", len(nodeInfo), "\n")
     for blockInfo in nodeInfo:
         timeStamp = int(blockInfo['timestamp'], 0)
         blockSize = int(blockInfo['size'], 0)
@@ -49,7 +49,7 @@ def aggerateData (p, tps):
         
         if totalTransactions > 0 and not txCheck:
             txCheck, initialStamp = True, timeStamp
-            previousBlockIndex = int(blockNumber, 0) - 2
+            previousBlockIndex =blockNumber - 2
             previousStamp = int(nodeInfo[previousBlockIndex]['timestamp'], 0)
 
 
@@ -87,8 +87,8 @@ def aggerateData (p, tps):
     intervalEnd = int(nodeInfo[-1]['timestamp'], 0)
 
     txSent = tps * (intervalEnd - intervalStart)
-    print("time", intervalEnd - intervalStart, "seconds \n")
-    print("TxSent", txSent, "\n")
+    # print("time", intervalEnd - intervalStart, "seconds \n")
+    # print("TxSent", txSent, "\n")
 
     after2Min = {
         "blockSizes": fullLength['blockSizes'][a2min:],
@@ -105,7 +105,7 @@ def aggerateData (p, tps):
     after2Min['avgBlockTime'] = sum(after2Min['blockTime'])/len(after2Min["blockTime"])
     after2Min['txSuccessRate'] = sum(after2Min['totalTransactions'])/txSent
     after2Min['avgTxThroughPut'] = sum(after2Min['totalTransactions'])/(intervalEnd - intervalStart)
-    after2Min['TimeStampOfStartBlock'] = fullLength['timestamp'][a2min - 1]
+    after2Min['TimeStampOfStartBlock'] = intervalStart
 
 
     # print("Avg block size", after2Min['avgBlockSize'], "\n" )
