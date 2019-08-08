@@ -13,7 +13,9 @@ Per node:
 '''
 import json
 
-def aggerateData (p):
+def aggerateData (p, timeStamp):
+
+    print("Time Stamp Passed in", timeStamp)
  
     cpuLog = open(p, "r")
 

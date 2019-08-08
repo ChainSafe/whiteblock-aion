@@ -16,6 +16,7 @@ blockParsing = False
 
 for subdir, dirs, files in os.walk(directory):
 
+
     for file in files:
         path = os.path.join(subdir, file)
 
@@ -34,13 +35,21 @@ for subdir, dirs, files in os.walk(directory):
             f.write(str(stats['txSent']) + '\n')
             f.write(str(stats['txSuccessRate']) + '\n')
             f.write(str(stats['avgTxThroughPut']) + '\n')
+            f.write(str(stats['TimeStampOfStartBlock']))
             f.close()
 
-        elif "cpu.log" in str(file):
+    for file in files:
+        
+        if "cpu.log" in str(file):
             d = os.path.dirname(path)
             seriesPath = os.path.abspath(d)
 
-            stats = aggerateSystemData(seriesPath.decode("utf-8")+"/cpu.log")
+            chainMetrics = open(seriesPath.decode("utf-8")+"/info.txt", "r")
+            lines = chainMetrics.readlines()
+            timeStamp = int(lines[5])
+            chainMetrics.close()
+
+            stats = aggerateSystemData(seriesPath.decode("utf-8")+"/cpu.log", timeStamp)
 
             d = os.path.dirname(path)
             seriesPath = os.path.abspath(d)

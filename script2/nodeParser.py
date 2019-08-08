@@ -45,21 +45,25 @@ def aggerateData (p, tps):
         timeStamp = int(blockInfo['timestamp'], 0)
         blockSize = int(blockInfo['size'], 0)
         totalTransactions = len(blockInfo['transactions'])
+        blockNumber = blockInfo['number']
         
         if totalTransactions > 0 and not txCheck:
-            txCheck, initialStamp, previousStamp = True, timeStamp, timeStamp
+            txCheck, initialStamp = True, timeStamp
+            previousBlockIndex = int(blockNumber, 0) - 2
+            previousStamp = int(nodeInfo[previousBlockIndex]['timestamp'], 0)
+
 
         if txCheck:
-            blockNumber = blockInfo['number']
+            
             fullLength['blockSizes'].append(blockSize)
             fullLength["blockTime"].append(timeStamp - previousStamp)
             fullLength["timestamps"].append(timeStamp)
             fullLength["totalTransactions"].append(totalTransactions)
             fullLength["blockNumber"].append(blockNumber)
 
-            fullLength["txThroughPut"].append(totalTransactions)
-            if fullLength['blockTime'][-1] != 0:
-                fullLength["txThroughPut"][-1] = totalTransactions/fullLength['blockTime'][-1]
+            # fullLength["txThroughPut"].append(totalTransactions)
+            # if fullLength['blockTime'][-1] != 0:
+            #     fullLength["txThroughPut"][-1] = totalTransactions/fullLength['blockTime'][-1]
 
             previousStamp = int(blockInfo['timestamp'],0)
             diff = (timeStamp - initialStamp)
@@ -89,7 +93,6 @@ def aggerateData (p, tps):
     after2Min = {
         "blockSizes": fullLength['blockSizes'][a2min:],
         "totalTransactions": fullLength['totalTransactions'][a2min:],
-        "txThroughPut": fullLength['txThroughPut'][a2min:],
         "timestamps" : fullLength['timestamps'][a2min:],
         "blockTime" : fullLength['blockTime'][a2min:],
         "txSent": txSent
@@ -101,12 +104,15 @@ def aggerateData (p, tps):
     after2Min['avgBlockSize'] = sum(after2Min['blockSizes'])/len(after2Min["blockSizes"])
     after2Min['avgBlockTime'] = sum(after2Min['blockTime'])/len(after2Min["blockTime"])
     after2Min['txSuccessRate'] = sum(after2Min['totalTransactions'])/txSent
-    after2Min['avgTxThroughPut'] = sum(after2Min['txThroughPut'])/len(after2Min['txThroughPut'])
+    after2Min['avgTxThroughPut'] = sum(after2Min['totalTransactions'])/(intervalEnd - intervalStart)
+    after2Min['TimeStampOfStartBlock'] = fullLength['timestamp'][a2min - 1]
 
-    print("Avg block size", after2Min['avgBlockSize'], "\n" )
-    print("Avg Block time", after2Min['avgBlockTime'], "seconds \n")
-    print("Avg Tx Throughput", after2Min['avgTxThroughPut'], "\n")
-    print("Tx success rate", (after2Min['txSuccessRate'])*100, "%\n")
+
+    # print("Avg block size", after2Min['avgBlockSize'], "\n" )
+    # print("Avg Block time", after2Min['avgBlockTime'], "seconds \n")
+    # print("Avg Tx Throughput", after2Min['avgTxThroughPut'], "\n")
+    # print("Tx success rate", (after2Min['txSuccessRate'])*100, "%\n")
+
     return after2Min, fullLength
 
 # initialPath = "/Users/master/Documents/Professional/whiteblock/whiteblock-parser/script/test/"
