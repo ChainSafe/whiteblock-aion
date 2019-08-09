@@ -69,7 +69,8 @@ for subdir, dirs, files in os.walk(directory):
                 chainMetrics = open(seriesPath.decode("utf-8")+"/info.txt", "r")
                 lines = chainMetrics.readlines()
             
-                timeStamp = lines[6]
+                if lines[6].isdigit():
+                        timeStamp = lines[6]
                 chainMetrics.close()
             except:
                 print("Bad Block. No blocks were evaluated in" + seriesPath.decode("utf-8"))
