@@ -150,6 +150,7 @@ for subdir, dirs, files in os.walk(directory):
             f.write("-----------------------\n")
             f.write("Directory Sizes:\n" + str(validSizes) + '\n')
             f.write("Size Stamps:\n" + str(validStamps) + '\n')
+            f.close()
  
 print("...Completed...")
 
