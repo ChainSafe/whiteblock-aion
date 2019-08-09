@@ -68,7 +68,7 @@ def aggerateData(p, tps):
                 diff1 = diff - 120
                 print("diff1", diff1)
 
-                diff2 = (timeStamp - fullLength["timestamps"][-2]) - 120
+                diff2 = 120 - (timeStamp - fullLength["timestamps"][-2])
                 print("diff2", diff2)
 
                 # initialStamp = Timestamp of the first blockWithTx
