@@ -6,14 +6,27 @@ import sys
 from nodeParser import aggerateData
 from resourceParser import aggerateData as aggerateSystemData
 
-# NOTE: V Represents where all the tests are
-#directory = os.fsencode("/home/master/series1")
+# NOTE: directory Represents where all the tests are
 directory = os.fsencode(sys.argv[1])
+# NOTE: TPS must match with the prescribed tps 
 TPS = 200
 
 results = {}
 blockParsing = False
 
+'''
+    Goes through all the blocks.json files in the test directory
+    and stores the final result in 'info.txt' file.
+    
+    info format
+    Chain Metrics
+    <avgBlockSize>
+    <avgBlockTime>
+    <EstimatedTxSent>
+    <TxSuccessRate>
+    <avgTxThroughPut>
+    <TimeStamp of first block with transactions>
+'''
 for subdir, dirs, files in os.walk(directory):
 
     for file in files:
@@ -37,6 +50,12 @@ for subdir, dirs, files in os.walk(directory):
             f.write(str(stats['TimeStampOfStartBlock'])+'\n')
             f.close()
 
+'''
+    Goes through all the cpu.log and datadir_size.log files.
+    Extracts the timeStamp of the first block with transactions from info.txt on line 7 
+    
+    Collects all the valid dataPoints and adds the final result in info.txt
+'''
 for subdir, dirs, files in os.walk(directory):
 
     for file in files:
@@ -45,11 +64,16 @@ for subdir, dirs, files in os.walk(directory):
             d = os.path.dirname(path)
             seriesPath = os.path.abspath(d)
 
-            chainMetrics = open(seriesPath.decode("utf-8")+"/info.txt", "r")
-            lines = chainMetrics.readlines()
-          
-            timeStamp = lines[6]
-            chainMetrics.close()
+            timeStamp = '0' 
+            try:
+                chainMetrics = open(seriesPath.decode("utf-8")+"/info.txt", "r")
+                lines = chainMetrics.readlines()
+            
+                timeStamp = lines[6]
+                chainMetrics.close()
+            except:
+                print("Bad Block. No blocks were evaluated in" + seriesPath.decode("utf-8"))
+
 
             stats = aggerateSystemData(seriesPath.decode("utf-8")+"/cpu.log", timeStamp)
 
