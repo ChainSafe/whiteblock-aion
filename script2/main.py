@@ -131,9 +131,12 @@ for subdir, dirs, files in os.walk(directory):
             for line in sizes:
                 info = line.split(" ")
                 # 0 -> size,  1 -> timestamp
-                if int(info[1]) >= int(timeStamp):
-                    validSizes.append(int(info[0]))
-                    validStamps.append(int(info[1]))
+                try:
+                    if int(info[1]) >= int(timeStamp):
+                        validSizes.append(int(info[0]))
+                        validStamps.append(int(info[1]))
+                except:
+                    print("BAd Line")
             
             dataDirAvg = sum(validSizes)/len(validSizes)
             dirSizeFile.close()
