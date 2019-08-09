@@ -124,6 +124,7 @@ for subdir, dirs, files in os.walk(directory):
 
             
             dirSizeFile = open(seriesPath.decode("utf-8")+"/datadir_size.log", 'r')
+            print("PAth:", dirSizeFile)
             sizes = dirSizeFile.readlines()
             validSizes = []
             validStamps = []
@@ -136,7 +137,7 @@ for subdir, dirs, files in os.walk(directory):
             
             dataDirAvg = sum(validSizes)/len(validSizes)
             dirSizeFile.close()
-            
+
             newFile = seriesPath.decode("utf-8")  + "/info.txt"
             f = open(newFile, "a+")
             f.write("-----------------------\n")
