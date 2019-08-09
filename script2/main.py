@@ -64,11 +64,16 @@ for subdir, dirs, files in os.walk(directory):
             d = os.path.dirname(path)
             seriesPath = os.path.abspath(d)
 
-            chainMetrics = open(seriesPath.decode("utf-8")+"/info.txt", "r")
-            lines = chainMetrics.readlines()
-          
-            timeStamp = lines[6]
-            chainMetrics.close()
+            timeStamp = '0' 
+            try:
+                chainMetrics = open(seriesPath.decode("utf-8")+"/info.txt", "r")
+                lines = chainMetrics.readlines()
+            
+                timeStamp = lines[6]
+                chainMetrics.close()
+            except:
+                print("Bad Block. No blocks were evaluated in" + seriesPath.decode("utf-8"))
+
 
             stats = aggerateSystemData(seriesPath.decode("utf-8")+"/cpu.log", timeStamp)
 
