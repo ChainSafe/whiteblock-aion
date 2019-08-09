@@ -30,6 +30,7 @@ contract MemoryUsage {
     }
 
     //gets the sum of data in the linked list of nodes created by address _creator
+    //this is iterative
     function getSum(address _creator) public view returns (uint) {
         uint sum = 0;
         bytes32 nextHash = head;
