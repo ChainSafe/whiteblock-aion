@@ -7,7 +7,7 @@ contract CPUIntensiveOperations {
 
     //Integer square root approximation utilizing Babylonian Method and OpenZeppelin's SafeMath
     //Solidity doesn't support fixed or floating points so this is a rough approximation that
-    //converges decently quickly
+    //converges decently but is wildly inaccurate for finding the square root of small numbers
 
     //Note that in solidity, division rounds down
     function babylonianSqrt(uint num) public returns (uint result) {
