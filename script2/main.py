@@ -48,6 +48,7 @@ for subdir, dirs, files in os.walk(directory):
             f.write(str(stats['txSuccessRate']) + '\n')
             f.write(str(stats['avgTxThroughPut']) + '\n')
             f.write(str(stats['TimeStampOfStartBlock'])+'\n')
+            f.write("\n")
             f.close()
 
 '''
@@ -64,10 +65,11 @@ for subdir, dirs, files in os.walk(directory):
             d = os.path.dirname(path)
             seriesPath = os.path.abspath(d)
 
-            timeStamp = '0' 
+            timeStamp = "0" 
             try:
                 chainMetrics = open(seriesPath.decode("utf-8")+"/info.txt", "r")
                 lines = chainMetrics.readlines()
+                print("Checking Path: ", seriesPath.decode("utf-8"))
             
                 timeStamp = lines[6]
                 chainMetrics.close()
