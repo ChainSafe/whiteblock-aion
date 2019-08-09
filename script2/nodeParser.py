@@ -65,7 +65,14 @@ def aggerateData(p, tps):
             #     fullLength["txThroughPut"][-1] = totalTransactions/fullLength['blockTime'][-1]
 
             previousStamp = int(blockInfo['timestamp'], 0)
+
+            print("previousStamp", previousStamp)
+            print("initialStamp", initialStamp)
+            print("timeStamp", timeStamp)
+
             diff = (timeStamp - initialStamp)
+
+            print(diff)
 
             # First Block with transactions + 120 = Start of test Interval
             if (diff >= 120):
