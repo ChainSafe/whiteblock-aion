@@ -135,7 +135,8 @@ for subdir, dirs, files in os.walk(directory):
                     validStamps.append(int(info[1]))
             
             dataDirAvg = sum(validSizes)/len(validSizes)
-
+            dirSizeFile.close()
+            
             newFile = seriesPath.decode("utf-8")  + "/info.txt"
             f = open(newFile, "a+")
             f.write("-----------------------\n")
