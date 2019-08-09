@@ -21,8 +21,9 @@ totalTransactions = total trasnactions in all the block starting from testStartB
 txSuccessRate = (totalTrasnactions/txSent)
 
 
-txThroughPut = totalTransactionsInBlock/blockTimeOfBlock
-avgTxThroughPut = sum(txThroughPut for each block)/total_blocks 
+avgTxThroughPut = sum(totalTransactions_Per Block)/(intervalEnd - IntervalStart) 
 
 cpuAvg = sum(cpuUsage at each timestamp after delay)/total_dataPoints
 ramAvg = sum(ramUsage at each timestamp after delay)/total_dataPoints
+
+dataDirSize = sum(dataDir sizes at each timeStamp after delay)/total_dataPoints

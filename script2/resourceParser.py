@@ -1,18 +1,14 @@
 #!/usr/bin/env python
-# Performance Metrics
-# Block Size: Measure the average block size; plot the block size over time.
-# Block time: Measure the average block time; plot the blocktime over time.
-# Transaction Throughput: Measure the average throughput of transactions; plot the throughput over time.
-# Tx Success Rate: Measure the number of transactions that have been sent and how many were included in blocks by the end of the test; plot the percentage of unsuccessful transactions over time.
-'''
 
-Per node:
-    cpuAvg = sum(cpuUsage at each timestamp after delay)/total_dataPoints
-    ramAvg = sum(ramUsage at each timestamp after delay)/total_dataPoints
-    
-'''
 import json
 
+'''
+    aggerateData goes through the list of cpulogs for each node in cpu.log file.
+    The function selects all dataPoints that are >= timeStamp and computes the average.
+    
+    timeStamp = TimeStamp of the block before the first block with transactions
+    p = file path
+'''
 def aggerateData (p, timeStamp):
 
     print("Time Stamp Passed in", timeStamp)

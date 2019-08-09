@@ -1,21 +1,16 @@
 #!/usr/bin/env python
-'''
-Metrics for single test
-    Average Block size:  sum(each block_size)/total_blocks
-
-    blockTime(n) = timeStamp(n) - timeStamp(n-1)
-    Average Block Time:  sun(block_time for each block)/total_blocks
-
-    txSent = tps * (time_of_test_run after delay)
-    txSuccessRate = (totalTrasnactionsInBlock/txSent)
-
-    txThroughPut = totalTransactionsInBlock/blockTime
-    avgTxThroughPut = sum(txThroughPut for each block)/total_blocks 
-
-'''
 
 import json
 
+'''
+    aggerateData goes through the list of blocks in the blocks.json file.
+    - The parser starts collecting datapoints after the first block with transactions
+      have been hit (fullLength)
+    - The index of the block with a timeStamp approximately 120s from the first blockWithTx is
+       marked (a2min)
+    - Once the parser goes through the list, the actual test run dataPoint are extracted using a2min and are
+     stored into (after2Min)
+'''
 def aggerateData (p, tps):
     with open(p, 'r') as f:
         nodeInfo = json.load(f)
@@ -61,18 +56,16 @@ def aggerateData (p, tps):
             fullLength["totalTransactions"].append(totalTransactions)
             fullLength["blockNumber"].append(blockNumber)
 
-            # fullLength["txThroughPut"].append(totalTransactions)
-            # if fullLength['blockTime'][-1] != 0:
-            #     fullLength["txThroughPut"][-1] = totalTransactions/fullLength['blockTime'][-1]
-
             previousStamp = int(blockInfo['timestamp'],0)
             diff = (timeStamp - initialStamp)
-
-
-            # First Block with transactions + 120 = Start of test Interval
+            
             if (diff >= 120):
                 diff1 = abs(120 - diff)
                 diff2 = abs(120 - (timeStamp -  fullLength["timestamps"][-2]))
+
+                #initialStamp = Timestamp of the first blockWithTx
+                #diff1 = how close the current timeStamp is to the 120 mark from initialStamp
+                #diff2 = how close is the timeStamp of the pervious block to the 120 mark from initialStamp
 
                 if startStamp == 0:
                     a2min = index
@@ -87,9 +80,7 @@ def aggerateData (p, tps):
     intervalEnd = int(nodeInfo[-1]['timestamp'], 0)
 
     txSent = tps * (intervalEnd - intervalStart)
-    # print("time", intervalEnd - intervalStart, "seconds \n")
-    # print("TxSent", txSent, "\n")
-
+    
     after2Min = {
         "blockSizes": fullLength['blockSizes'][a2min:],
         "totalTransactions": fullLength['totalTransactions'][a2min:],
@@ -97,8 +88,6 @@ def aggerateData (p, tps):
         "blockTime" : fullLength['blockTime'][a2min:],
         "txSent": txSent
     }
-
-    # print("After 2MIN blocks", after2Min['blockSizes'], "\n")
     
     
     after2Min['avgBlockSize'] = sum(after2Min['blockSizes'])/len(after2Min["blockSizes"])
@@ -114,9 +103,3 @@ def aggerateData (p, tps):
     # print("Tx success rate", (after2Min['txSuccessRate'])*100, "%\n")
 
     return after2Min, fullLength
-
-# initialPath = "/Users/master/Documents/Professional/whiteblock/whiteblock-parser/script/test/"
-# check = "/Users/master/Documents/Professional/whiteblock/Test/series_2a.1_2019-07-30T22:53:10/nodes/fb921383-af49-4e86-9a57-82b51ec1f381/blocks.json"
-# testPath = "/Users/priom/Desktop/ChainSafe/whiteblock-aion/script2/blocks.json"
-
-# aggerateData(testPath, 200)
