@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 contract MemoryUsage {
 
     //using hashes as "pointers"
-    //this is because solidity doesn't support recursive function definitions
+    //this is because solidity doesn't support recursive struct definitions
     mapping (bytes32 => Node) public nodes;
 
     bytes32 head;
