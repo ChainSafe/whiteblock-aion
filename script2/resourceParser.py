@@ -10,8 +10,6 @@ import json
     p = file path
 '''
 def aggerateData (p, timeStamp):
-
-    print("Time Stamp Passed in", timeStamp)
  
     cpuLog = open(p, "r")
 
@@ -25,6 +23,7 @@ def aggerateData (p, timeStamp):
         "cpuAvgs": [],
         "ramUsage": [],
         "ramAvgs": [],
+        "timeStamps": []
     }
 
     i = 0
@@ -42,7 +41,6 @@ def aggerateData (p, timeStamp):
             if nodes[nodeIndex]['timestamp'] >= int(timeStamp):
                 fullLength["cpuUsage"][nodeIndex].append(nodes[nodeIndex]["resourceUse"]["cpu"])
                 fullLength["ramUsage"][nodeIndex].append(nodes[nodeIndex]["resourceUse"]["residentSetSize"])
-            # print(nodeIndex)
 
 
     for i in range(totalNode):

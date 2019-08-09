@@ -12,12 +12,9 @@ import json
      stored into (after2Min)
 '''
 
-
 def aggerateData(p, tps):
     with open(p, 'r') as f:
         nodeInfo = json.load(f)
-
-    testInitialDelay = 120
 
     fullLength = {
         "blockSizes": [],
@@ -32,11 +29,10 @@ def aggerateData(p, tps):
     previousStamp = int(nodeInfo[0]['timestamp'], 0)
     startStamp = 0
     index = 0
-    txStartIndex = 0
 
     a2min = 0
     txCheck = False
-    # print("Total Block Length", len(nodeInfo), "\n")
+
     for blockInfo in nodeInfo:
         timeStamp = int(blockInfo['timestamp'], 0)
         blockSize = int(blockInfo['size'], 0)
@@ -56,20 +52,17 @@ def aggerateData(p, tps):
             fullLength["totalTransactions"].append(totalTransactions)
             fullLength["blockNumber"].append(blockNumber)
 
+
+            fullLength["txThroughPut"].append(totalTransactions)
+            if fullLength['blockTime'][-1] != 0:
+                fullLength["txThroughPut"][-1] = totalTransactions/fullLength['blockTime'][-1]
+
             previousStamp = int(blockInfo['timestamp'], 0)
             diff = (timeStamp - initialStamp)
 
-            print("timeStamp", timeStamp)
-            print("previousStamp", previousStamp)
-            print("initialStamp", initialStamp)
-            print("diff", diff)
-
             if (diff >= 120):
-                diff1 = diff - 120
-                print("diff1", diff1)
-
-                diff2 = 120 - (timeStamp - fullLength["timestamps"][-2])
-                print("diff2", diff2)
+                diff1 = abs(diff - 120)
+                diff2 = abs(120 - (timeStamp - fullLength["timestamps"][-2]))
 
                 # initialStamp = Timestamp of the first blockWithTx
                 # diff1 = how close the current timeStamp is to the 120 mark from initialStamp
@@ -77,7 +70,6 @@ def aggerateData(p, tps):
 
                 if startStamp == 0:
                     a2min = index
-                    txStartIndex = blockNumber = blockInfo['number'] - 1
                     startStamp = -1
                     if diff2 < diff1:
                         a2min = index - 1
@@ -94,6 +86,7 @@ def aggerateData(p, tps):
         "totalTransactions": fullLength['totalTransactions'][a2min:],
         "timestamps": fullLength['timestamps'][a2min:],
         "blockTime": fullLength['blockTime'][a2min:],
+        "txThroughPut": fullLength['txThroughPut'][a2min:],
         "txSent": txSent
     }
 
@@ -102,10 +95,5 @@ def aggerateData(p, tps):
     after2Min['txSuccessRate'] = sum(after2Min['totalTransactions']) / txSent
     after2Min['avgTxThroughPut'] = sum(after2Min['totalTransactions']) / (intervalEnd - intervalStart)
     after2Min['TimeStampOfStartBlock'] = intervalStart
-
-    # print("Avg block size", after2Min['avgBlockSize'], "\n" )
-    # print("Avg Block time", after2Min['avgBlockTime'], "seconds \n")
-    # print("Avg Tx Throughput", after2Min['avgTxThroughPut'], "\n")
-    # print("Tx success rate", (after2Min['txSuccessRate'])*100, "%\n")
 
     return after2Min, fullLength

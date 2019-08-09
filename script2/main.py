@@ -50,6 +50,22 @@ for subdir, dirs, files in os.walk(directory):
             f.write(str(stats['TimeStampOfStartBlock'])+'\n')
             f.close()
 
+            newFile = seriesNam.decode("utf-8")  + "/graphMetrics.txt"
+            f = open(newFile, "w+")
+            f.write("----------------\n")
+            f.write("BlockSizes:\n")
+            f.write(str(stats['blockSizes']) + "\n")
+            f.write("BlockTime:\n")
+            f.write(str(stats['blockTime'])+ "\n")
+            f.write("BlockTxThroughPut:\n")
+            f.write(str(stats['txThroughPut'])+ "\n")
+            f.write("TimeStamps:\n")
+            f.write(str(stats['timestamps'])+ "\n")
+            f.write("totalTransactions per block:\n")
+            f.write(str(stats['totalTransactions'])+ "\n")
+            f.write("--------------------\n")
+            f.close()
+
 '''
     Goes through all the cpu.log and datadir_size.log files.
     Extracts the timeStamp of the first block with transactions from info.txt on line 7 
@@ -89,8 +105,20 @@ for subdir, dirs, files in os.walk(directory):
             f.write("CPU/RAM metrics \n")
             f.write(str(stats['cpuAvgUsage']) + '\n' )
             f.write(str(stats['ramAvgUsage']) + '\n' )
-            f.write("Average Cpu Usage per node : "+ str(stats['cpuAvgs']) + '\n')
-            f.write("Average Ram Usage per node : "+ str(stats['ramAvgs']) + '\n')
+            f.write("-----------------------\n")
+            f.close()
+
+            newFile = seriesNam.decode("utf-8")  + "/graphMetrics.txt"
+            f = open(newFile, "a+")
+            f.write("-----------------------\n")
+            f.write("CPUsage Per NODE: \n")
+            f.write(str(stats["cpuUsage"]) + '\n')
+            f.write("RAMUsage Per NODE: \n")
+            f.write(str(stats['ramUsage']) + '\n')
+            f.write("TimeStamps for each usage:\n")
+            f.write(str(stats['timeStamps']) + '\n')
+            f.write("Average Cpu Usage per node : \n"+ str(stats['cpuAvgs']) + '\n')
+            f.write("Average Ram Usage per node : \n"+ str(stats['ramAvgs']) + '\n')
             f.write("-----------------------\n")
             f.close()
 
@@ -98,23 +126,30 @@ for subdir, dirs, files in os.walk(directory):
             dirSizeFile = open(seriesPath.decode("utf-8")+"/datadir_size.log", 'r')
             sizes = dirSizeFile.readlines()
             validSizes = []
+            validStamps = []
             for line in sizes:
                 info = line.split(" ")
                 # 0 -> size,  1 -> timestamp
                 if int(info[1]) >= int(timeStamp):
                     validSizes.append(int(info[0]))
+                    validStamps.append(int(info[1]))
             
             dataDirAvg = sum(validSizes)/len(validSizes)
 
             newFile = seriesPath.decode("utf-8")  + "/info.txt"
             f = open(newFile, "a+")
             f.write("-----------------------\n")
-            
             f.write("Directory Size\n")
             f.write("Avg DataDir size:" + str(dataDirAvg) + "\n")
             f.write("-----------------------\n")
             
             f.close()
+
+            newFile = seriesNam.decode("utf-8")  + "/graphMetrics.txt"
+            f = open(newFile, "a+")
+            f.write("-----------------------\n")
+            f.write("Directory Sizes:\n" + str(validSizes) + '\n')
+            f.write("Size Stamps:\n" + str(validStamps) + '\n')
  
 print("...Completed...")
 
